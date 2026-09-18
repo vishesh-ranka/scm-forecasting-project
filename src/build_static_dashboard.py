@@ -29,13 +29,13 @@ TOP_PRODUCTS = 300
 
 LEVELS = [
     ("total", "Company-Wide Total", "One number: every product in every store, combined."),
-    ("category", "Product Category", "3 categories — FOODS, HOBBIES, HOUSEHOLD."),
+    ("category", "Product Category", "3 categories - FOODS, HOBBIES, HOUSEHOLD."),
     ("department", "Department",
-     "7 departments — FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, HOUSEHOLD_1, HOUSEHOLD_2."),
+     "7 departments - FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, HOUSEHOLD_1, HOUSEHOLD_2."),
     ("store", "Store",
-     "10 Walmart stores — CA_1–CA_4 (California), TX_1–TX_3 (Texas), WI_1–WI_3 (Wisconsin)."),
+     "10 Walmart stores - CA_1–CA_4 (California), TX_1–TX_3 (Texas), WI_1–WI_3 (Wisconsin)."),
     ("item_store", "Individual Product (per store)",
-     "30,490 combinations — 3,049 products × 10 stores."),
+     "30,490 combinations - 3,049 products × 10 stores."),
 ]
 UI_METHODS = [
     ("unreconciled", "Original Forecast", "#2B2B2B"),
@@ -264,8 +264,8 @@ pre{background:#15152b;border:1px solid var(--line);border-radius:8px;padding:14
 
 <h1>Hierarchical Demand Forecasting</h1>
 <p class="lede">Predicting daily sales for <strong>10 Walmart stores</strong> in California, Texas and
-Wisconsin — for the company as a whole, for each product category, for each store, and for each
-individual product in each store — and then adjusting those predictions so they
+Wisconsin - for the company as a whole, for each product category, for each store, and for each
+individual product in each store - and then adjusting those predictions so they
 <strong>add up correctly to each other</strong>, which separately-made predictions never do on their own.</p>
 <p class="muted">Data: the public M5 competition dataset (Walmart, 2011–2016). <strong>Units</strong> means
 individual items sold per day. Product names are anonymised in the source data, so products appear as
@@ -279,15 +279,15 @@ data ships with.</p>
 <h2>The Problem</h2>
 <p>A demand plan gets used at every altitude at once. Finance commits to a company-wide total, category
 managers plan by category, and the replenishment team orders stock for one product in one store. If each
-level is forecast on its own, <strong>those numbers disagree</strong> — and someone ends up reconciling
+level is forecast on its own, <strong>those numbers disagree</strong> - and someone ends up reconciling
 them in a spreadsheet by hand.</p>
 
 <h2>Why This Is Hard</h2>
-<p>There are two independent ways to slice this business — by <strong>product</strong>
+<p>There are two independent ways to slice this business - by <strong>product</strong>
 (product → department → category) and by <strong>geography</strong> (store → state). These two paths
 <strong>cross rather than nest</strong>: every category is sold in every store, so neither slicing sits
 inside the other. A single product-in-a-store rolls up through two different chains, not one.</p>
-<p>That rules out the simplest fix — taking the company total and splitting it downward — because there
+<p>That rules out the simplest fix - taking the company total and splitting it downward - because there
 is no single path down. It forces methods that work on the whole structure at once.</p>
 <pre>Company Total ──┬── Product Category ── Department ──┐
                 │                                    ├── Individual Product per Store
@@ -300,7 +300,7 @@ contains no store addresses or coordinates, so exact locations are not shown.</p
 
 <h2>Forecast Accuracy By Level</h2>
 <p>Pick a level of the business to see how the three methods compare. <strong>Lower bars are better</strong>
-— the number is the average amount the forecast missed by, per day.</p>
+- the number is the average amount the forecast missed by, per day.</p>
 <div class="controls">
   <div class="ctl"><label for="lvl">Choose A Level Of The Business</label>
     <select id="lvl"></select></div>
@@ -314,13 +314,13 @@ day because it sums millions of units of sales, while a single product in a sing
 
 <h3>What-If: Where Would You Rather Be Accurate?</h3>
 <div class="controls">
-  <div class="ctl"><label for="blend">Drag to shift priority — <span id="blendLabel"></span></label>
+  <div class="ctl"><label for="blend">Drag to shift priority - <span id="blendLabel"></span></label>
     <input type="range" id="blend" min="0" max="100" step="5" value="0"></div>
 </div>
 <div class="chart" id="blendChart"></div>
 <p class="muted"><strong>Illustrative only.</strong> This slides linearly between two results that were
 already computed (MinT at 0%, the original forecast at 100%). It does not re-run the optimisation, and
-the in-between blends are not themselves coherent forecasts — they would not add up.</p>
+the in-between blends are not themselves coherent forecasts - they would not add up.</p>
 
 <h3 id="memberHead">Every Level, Compared</h3>
 <div class="chart" id="memberChart"></div>
@@ -343,17 +343,17 @@ the in-between blends are not themselves coherent forecasts — they would not a
 </div>
 <div class="tiles" id="prodTiles"></div>
 <div class="chart" id="prodChart"></div>
-<p class="muted"><strong>The two forecast lines will look identical — that is the real result, not a
+<p class="muted"><strong>The two forecast lines will look identical - that is the real result, not a
 glitch.</strong> Reconciliation moves an individual product's forecast by about 0.05 units a day on
 average. Almost all of the adjustment lands on the aggregate levels; the bottom of the hierarchy barely
-moves. This page ships the <span id="topN"></span> highest-selling combinations of the 30,490 — the full
+moves. This page ships the <span id="topN"></span> highest-selling combinations of the 30,490 - the full
 set is in the Streamlit version.</p>
 
 <hr>
 
 <h2>Which Days Are Hardest To Forecast?</h2>
 <p>The same 28 days, grouped by day of the week. Retail demand is strongly weekly, so some days are
-consistently harder to predict than others — and reconciliation does not help them equally.</p>
+consistently harder to predict than others - and reconciliation does not help them equally.</p>
 <div class="controls">
   <div class="ctl"><label for="dowLvl">Choose A Level Of The Business</label>
     <select id="dowLvl"></select></div>
@@ -373,7 +373,7 @@ to compare them. Hover for exact values.</p>
 </div>
 <div class="chart" id="totalChart"></div>
 <div class="tiles" id="totalTiles"></div>
-<p class="muted">Both forecasts follow the weekly rhythm — sales peak at weekends — but under-shoot the
+<p class="muted">Both forecasts follow the weekly rhythm - sales peak at weekends - but under-shoot the
 biggest peaks. The reconciled forecast sits closer to reality on most days.</p>
 
 <hr>
@@ -398,7 +398,7 @@ Walmart stores, rolled up into five levels of the business, then adjusted so eve
 every other.</p>
 <p><strong>What reconciliation bought.</strong> Before it, adding up the individual forecasts missed the
 company-wide forecast by as much as <strong>3,449 units on a single day</strong>. After it, the levels
-agree to within a rounding error — a gap of about one unit in eleven trillion. That consistency is
+agree to within a rounding error - a gap of about one unit in eleven trillion. That consistency is
 <em>guaranteed by construction</em>, not tuned for.</p>
 <p><strong>What it cost.</strong> Company-wide accuracy improved <strong>12.5%</strong> and category
 accuracy <strong>4.6%</strong>, but department and store forecasts got <strong>2.7–5.6% worse</strong>.
@@ -406,31 +406,31 @@ Error was moved, not removed. At the individual-product level almost nothing cha
 <p><strong>So what.</strong> Whether this is a good trade depends on one question: which level is the plan
 actually committed at? If finance signs up to a company-wide number, reconciliation pays for itself. If
 the binding commitment is store-level replenishment, it costs more than it returns. That is a business
-decision, and the numbers above are the input to it — not a model-selection question with one right answer.</p>
+decision, and the numbers above are the input to it - not a model-selection question with one right answer.</p>
 
 <hr>
 
 <h2>Glossary And Technical Details</h2>
 <details><summary>Glossary</summary>
 <ul>
-<li><strong>Forecast</strong> — a prediction of how many units will sell on a future day.</li>
-<li><strong>Base forecast</strong> — the first-draft prediction made for each level separately, before any adjustment.</li>
-<li><strong>Hierarchy level</strong> — one altitude of the business: the company total, a product category, a department, a store, or a single product in a single store.</li>
-<li><strong>Reconciliation</strong> — adjusting a set of forecasts so the smaller ones add up exactly to the bigger ones.</li>
-<li><strong>Forecast error (RMSE)</strong> — how far off the forecast was, on average, in units of product per day. Lower is better.</li>
+<li><strong>Forecast</strong> - a prediction of how many units will sell on a future day.</li>
+<li><strong>Base forecast</strong> - the first-draft prediction made for each level separately, before any adjustment.</li>
+<li><strong>Hierarchy level</strong> - one altitude of the business: the company total, a product category, a department, a store, or a single product in a single store.</li>
+<li><strong>Reconciliation</strong> - adjusting a set of forecasts so the smaller ones add up exactly to the bigger ones.</li>
+<li><strong>Forecast error (RMSE)</strong> - how far off the forecast was, on average, in units of product per day. Lower is better.</li>
 </ul>
 </details>
 <details><summary>How The Forecasts Were Built</summary>
 <p>The raw M5 Walmart data is reshaped in DuckDB from a spreadsheet-style file (one column per day) into
-58.3 million rows — one per product, per store, per day across 5 years — then aggregated into the five levels.</p>
+58.3 million rows - one per product, per store, per day across 5 years - then aggregated into the five levels.</p>
 <p>Each level gets one global LightGBM model using day-of-week, month, and lagged and rolling-average
 sales. Because the horizon is 28 days but the features reach back only 7, the model feeds its own
-predictions forward day by day rather than peeking at held-out values — verified by replacing the test
+predictions forward day by day rather than peeking at held-out values - verified by replacing the test
 period with random numbers and confirming the forecasts did not change.</p>
 </details>
 <details><summary>Why The Textbook Method Does Not Fit</summary>
 <p>The standard version of MinT needs a table comparing every product-store combination with every other
-one. At 30,490 combinations that is a 30,490 × 30,490 matrix — about 7.4 GB — and the maths requires
+one. At 30,490 combinations that is a 30,490 × 30,490 matrix - about 7.4 GB - and the maths requires
 effectively inverting it.</p>
 <p>The sparse version used here exploits the fact that of the 930 million possible entries in the summing
 table, only 152,450 are non-zero (0.016%). It solves in 0.06 seconds.</p>
@@ -480,7 +480,7 @@ function layout(title, opts){
 }
 
 function nf(x, d){
-  if(x === null || x === undefined) return '—';
+  if(x === null || x === undefined) return '-';
   return x.toLocaleString('en-US', {minimumFractionDigits:d===undefined?0:d,
                                     maximumFractionDigits:d===undefined?0:d});
 }
@@ -557,7 +557,7 @@ function drawError(){
   const vals = METHODS.map(function(m){return e[m.key];});
   const deltas = METHODS.map(function(m){return (e[m.key]-base)/base*100;});
   const blurb = LEVELS.filter(function(l){return l.key===lv;})[0].blurb;
-  document.getElementById('lvlBlurb').innerHTML = '<strong>' + labelOf(lv) + '</strong> — ' + blurb;
+  document.getElementById('lvlBlurb').innerHTML = '<strong>' + labelOf(lv) + '</strong> - ' + blurb;
 
   Plotly.react('errChart', [{
     type:'bar', x:METHODS.map(function(m){return m.label;}), y:vals,
@@ -567,7 +567,7 @@ function drawError(){
     textposition:'outside', textfont:{color:C.ink, size:12},
     hovertemplate:'<b>%{x}</b><br>Average daily miss: %{y:,.3f} units'+
       '<br>Change vs. original: %{customdata:+.1f}%<extra></extra>'
-  }], Object.assign(layout('Forecast Error — ' + labelOf(lv),
+  }], Object.assign(layout('Forecast Error - ' + labelOf(lv),
       {height:400, ytitle:'Average daily miss (units sold)'}),
       {yaxis:{gridcolor:C.grid, linecolor:C.grid, zeroline:false, tickfont:{color:C.soft},
               title:{text:'Average daily miss (units sold)', font:{color:C.soft}},
@@ -653,7 +653,7 @@ const prodSel = document.getElementById('prod');
 D.productIds.forEach(function(id){
   const p = D.products[id];
   prodSel.insertAdjacentHTML('beforeend',
-    '<option value="'+id+'">'+id+' — '+p.avg.toFixed(1)+' units/day</option>');
+    '<option value="'+id+'">'+id+' - '+p.avg.toFixed(1)+' units/day</option>');
 });
 
 function drawProduct(){
@@ -687,7 +687,7 @@ function drawProduct(){
       hovertemplate:'<b>%{x}</b><br>Reconciled: %{y:.2f} units<extra></extra>'});
   }
   Plotly.react('prodChart', traces, Object.assign(
-    layout('Daily Sales And Forecast — ' + id, {height:400, legend:true, ytitle:'Units sold per day'}),
+    layout('Daily Sales And Forecast - ' + id, {height:400, legend:true, ytitle:'Units sold per day'}),
     {hovermode:'x unified',
      xaxis:{gridcolor:C.grid, linecolor:C.grid, zeroline:false, tickfont:{color:C.soft},
             showspikes:true, spikemode:'across', spikethickness:1, spikedash:'dot', spikecolor:'#9aa0a6'}}
@@ -709,7 +709,7 @@ function drawDow(){
      customdata:d.map(function(x){return x.avg;}),
      hovertemplate:'<b>%{x}</b><br>Reconciled miss: %{y:,.1f} units'+
        '<br>Avg sales that day: %{customdata:,.0f} units<extra></extra>'}
-  ], Object.assign(layout('Average Daily Miss By Weekday — ' + labelOf(lv),
+  ], Object.assign(layout('Average Daily Miss By Weekday - ' + labelOf(lv),
      {height:400, legend:true, ytitle:'Average miss (units sold)'}), {barmode:'group'}), CFG);
 
   let worst = d[0], bestGain = d[0], worstGain = d[0];
@@ -750,7 +750,7 @@ function drawTotal(){
       hovertemplate:'<b>%{x}</b><br>Reconciled forecast: %{y:,.0f} units<extra></extra>'});
   }
   Plotly.react('totalChart', traces, Object.assign(
-    layout('Total Units Sold Per Day — Forecast And Actual',
+    layout('Total Units Sold Per Day - Forecast And Actual',
            {height:460, legend:true, ytitle:'Total units sold per day'}),
     {hovermode:'x unified',
      xaxis:{gridcolor:C.grid, linecolor:C.grid, zeroline:false, tickfont:{color:C.soft},
@@ -789,10 +789,10 @@ function drawCoh(){
 
   document.getElementById('cohNote').innerHTML = stage === 'before'
     ? '<div class="note warn">The levels disagree. Adding up the individual forecasts gives an answer ' +
-      'that differs from the company-wide forecast by as much as 3,449 units on a single day — roughly ' +
+      'that differs from the company-wide forecast by as much as 3,449 units on a single day - roughly ' +
       '1.9–2.5% of that day\'s sales.</div>'
     : '<div class="note good"><strong>Every level now adds up.</strong> What is left is effectively zero ' +
-      '— ordinary floating-point rounding from adding 30,490 numbers in a different order, not a real ' +
+      '- ordinary floating-point rounding from adding 30,490 numbers in a different order, not a real ' +
       'inconsistency. The Bottom-Up gap is exactly 0 and the MinT gap is about 0.00000001 units, against ' +
       'a daily total of roughly 39,000 units.</div>';
 }

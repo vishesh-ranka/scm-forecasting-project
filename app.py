@@ -54,12 +54,12 @@ PLOT_GRID = "#e3e5e8"
 
 LEVEL_BLURB = {
     "total": "One number: every product in every store, combined.",
-    "category": "3 categories — **FOODS**, **HOBBIES**, **HOUSEHOLD**.",
-    "department": "7 departments — **FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, "
+    "category": "3 categories - **FOODS**, **HOBBIES**, **HOUSEHOLD**.",
+    "department": "7 departments - **FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, "
                   "HOUSEHOLD_1, HOUSEHOLD_2**.",
-    "store": "10 Walmart stores — **CA_1–CA_4** (California), **TX_1–TX_3** (Texas), "
+    "store": "10 Walmart stores - **CA_1–CA_4** (California), **TX_1–TX_3** (Texas), "
              "**WI_1–WI_3** (Wisconsin).",
-    "item_store": "30,490 combinations — 3,049 products × 10 stores "
+    "item_store": "30,490 combinations - 3,049 products × 10 stores "
                   "(e.g. `FOODS_1_001_CA_1` is product FOODS_1_001 in store CA_1).",
 }
 
@@ -354,14 +354,14 @@ def fmt_share(pct):
 # --------------------------------------------------------------------------
 st.title("Hierarchical Demand Forecasting")
 st.markdown(
-    "Predicting daily sales for **10 Walmart stores** in California, Texas and Wisconsin — for the "
+    "Predicting daily sales for **10 Walmart stores** in California, Texas and Wisconsin - for the "
     "company as a whole, for each product category, for each store, and for each individual product "
-    "in each store — and then adjusting those predictions so they **add up correctly to each "
+    "in each store - and then adjusting those predictions so they **add up correctly to each "
     "other**, which separately-made predictions never do on their own."
 )
 st.caption(
     "Data: the public M5 competition dataset (Walmart, 2011–2016). **Units** means individual items "
-    "sold per day — one unit is one item scanned at a checkout. Product names are anonymised in the "
+    "sold per day - one unit is one item scanned at a checkout. Product names are anonymised in the "
     "source data, so products appear as IDs such as `FOODS_1_001`; the three categories (FOODS, "
     "HOBBIES, HOUSEHOLD) and the 10 store IDs are the real groupings the data ships with."
 )
@@ -457,7 +457,7 @@ level = st.selectbox(
     "Choose A Level Of The Business", LEVELS,
     format_func=lambda lv: LEVEL_LABELS[lv], key="level_select",
 )
-st.caption(f"**{LEVEL_LABELS[level]}** — {LEVEL_BLURB[level]}")
+st.caption(f"**{LEVEL_LABELS[level]}** - {LEVEL_BLURB[level]}")
 
 level_errors = errors[errors["level"] == level].set_index("method")["rmse"].to_dict()
 baseline = level_errors["unreconciled"]
@@ -626,7 +626,7 @@ st.divider()
 st.markdown("### :primary[Look Up One Product In One Store]")
 st.markdown(
     "Every one of the 30,490 product-store combinations has its own forecast. "
-    "Narrow the list down, then pick a product — the list is ordered by how much it sells."
+    "Narrow the list down, then pick a product - the list is ordered by how much it sells."
 )
 
 f1, f2 = st.columns(2)
@@ -639,7 +639,7 @@ store_filter = f2.selectbox(
 )
 
 opts = load_item_options(cat_filter, store_filter)
-labels = {r.series_id: f"{r.series_id}  —  {r.avg_units:.1f} units/day" for r in opts.itertuples()}
+labels = {r.series_id: f"{r.series_id}  -  {r.avg_units:.1f} units/day" for r in opts.itertuples()}
 chosen = st.selectbox(
     f"Choose A Product ({len(opts):,} match, busiest first)",
     opts["series_id"].tolist(), format_func=lambda s: labels[s], key="item_select",
@@ -662,7 +662,7 @@ i4.metric("Reconciliation Moved It By", f"{moved:.3f} units/day")
 
 if stats["avg_units"] == 0:
     st.warning(
-        "This product sold nothing at all during the 28-day test window — 1,587 of the 30,490 "
+        "This product sold nothing at all during the 28-day test window - 1,587 of the 30,490 "
         "combinations didn't. The actual line will sit flat on zero.", icon=None,
     )
 elif stats["avg_units"] < 1:
@@ -698,7 +698,7 @@ fig_item.update_layout(
 st.plotly_chart(style_plot(fig_item, height=440, legend=True), width="stretch")
 chart_downloads(fig_item, f"product_{chosen}", "item", daily)
 st.caption(
-    "**The two forecast lines will look identical — that is the real result, not a glitch.** "
+    "**The two forecast lines will look identical - that is the real result, not a glitch.** "
     "Reconciliation moves an individual product's forecast by about 0.05 units a day on average "
     "(0.30 at most), which is invisible next to daily sales. Almost all of the adjustment lands on "
     "the aggregate levels; the bottom of the hierarchy barely moves. The metric above tells you the "
@@ -714,7 +714,7 @@ st.divider()
 st.markdown("### :primary[Which Days Are Hardest To Forecast?]")
 st.markdown(
     "The same 28 days, grouped by day of the week. Retail demand is strongly weekly, so some days "
-    "are consistently harder to predict than others — and reconciliation does not help them equally."
+    "are consistently harder to predict than others - and reconciliation does not help them equally."
 )
 
 dow_level = st.selectbox(
@@ -756,7 +756,7 @@ st.markdown(
 )
 st.caption(
     "Hover any bar for that weekday's average sales. High-volume days are not automatically the "
-    "hardest — the error is driven by how unusual the day is, not just how big it is."
+    "hardest - the error is driven by how unusual the day is, not just how big it is."
 )
 st.divider()
 
@@ -932,18 +932,18 @@ agrees with every other.
 
 **What reconciliation bought.** Before it, adding up the individual forecasts missed the
 company-wide forecast by as much as **3,449 units on a single day**. After it, the levels agree to
-within a rounding error — a gap of about one unit in eleven trillion. That consistency is
+within a rounding error - a gap of about one unit in eleven trillion. That consistency is
 *guaranteed by construction*, not tuned for.
 
 **What it cost.** Company-wide accuracy improved **{(total_orig - total_mint) / total_orig * 100:.1f}%**
 and category accuracy **4.6%**, but department and store forecasts got **2.7–5.6% worse**. Error was
-moved, not removed. At the individual-product level almost nothing changed at all — the typical
+moved, not removed. At the individual-product level almost nothing changed at all - the typical
 forecast shifted by 0.05 units a day.
 
 **So what.** Whether this is a good trade depends on one question: which level is the plan actually
 committed at? If finance signs up to a company-wide number, reconciliation pays for itself. If the
 binding commitment is store-level replenishment, it costs more than it returns. That is a business
-decision, and the numbers above are the input to it — not a model-selection question with one right
+decision, and the numbers above are the input to it - not a model-selection question with one right
 answer.
 """
 )

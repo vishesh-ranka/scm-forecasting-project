@@ -17,8 +17,8 @@
 -- Assumes data/staged/hierarchy/ already exists (sql_runner.py creates it).
 
 -- The descriptive columns, keyed by the same grain as the staged sales.
--- (item_id, store_id) is a unique key in the source CSV — 30,490 rows,
--- 30,490 distinct pairs — so this join is 1:1 and cannot fan out rows.
+-- (item_id, store_id) is a unique key in the source CSV - 30,490 rows,
+-- 30,490 distinct pairs - so this join is 1:1 and cannot fan out rows.
 CREATE OR REPLACE TEMP VIEW item_store_dim AS
 SELECT item_id, store_id, dept_id, cat_id, state_id
 FROM read_csv_auto('sales_train_validation.csv');
@@ -38,7 +38,7 @@ SELECT
 FROM read_parquet('data/staged/sales_long.parquet') s
 JOIN item_store_dim d USING (item_id, store_id);
 
--- Level: Total — one series. The top of the hierarchy and the reconciliation
+-- Level: Total - one series. The top of the hierarchy and the reconciliation
 -- constraint every other level must sum to. 1,913 rows (one per day).
 COPY (
     SELECT date, CAST(SUM(sales) AS BIGINT) AS sales
@@ -47,7 +47,7 @@ COPY (
     ORDER BY date
 ) TO 'data/staged/hierarchy/total.parquet' (FORMAT PARQUET);
 
--- Level: Category — 3 series (FOODS, HOBBIES, HOUSEHOLD).
+-- Level: Category - 3 series (FOODS, HOBBIES, HOUSEHOLD).
 -- First split of the product dimension. 3 x 1,913 = 5,739 rows.
 COPY (
     SELECT date, cat_id, CAST(SUM(sales) AS BIGINT) AS sales
@@ -56,7 +56,7 @@ COPY (
     ORDER BY cat_id, date
 ) TO 'data/staged/hierarchy/category.parquet' (FORMAT PARQUET);
 
--- Level: Department — 7 series. Departments nest strictly inside categories
+-- Level: Department - 7 series. Departments nest strictly inside categories
 -- (FOODS_1..3 -> FOODS, HOBBIES_1..2 -> HOBBIES, HOUSEHOLD_1..2 ->
 -- HOUSEHOLD), so cat_id is carried alongside dept_id: it makes each row's
 -- parent explicit and lets the summing matrix be built without re-joining.
@@ -68,7 +68,7 @@ COPY (
     ORDER BY dept_id, date
 ) TO 'data/staged/hierarchy/department.parquet' (FORMAT PARQUET);
 
--- Level: Store — 10 series. This is the geographic dimension, independent of
+-- Level: Store - 10 series. This is the geographic dimension, independent of
 -- the product dimension above. Stores nest strictly inside states (CA_1..4 ->
 -- CA, TX_1..3 -> TX, WI_1..3 -> WI), so state_id is carried for the same
 -- reason cat_id is carried above: it makes the state level a pure roll-up of
@@ -80,7 +80,7 @@ COPY (
     ORDER BY store_id, date
 ) TO 'data/staged/hierarchy/store.parquet' (FORMAT PARQUET);
 
--- Level: Item-store — 30,490 series. The bottom of the hierarchy and the only
+-- Level: Item-store - 30,490 series. The bottom of the hierarchy and the only
 -- level that is observed rather than aggregated; every level above is a sum of
 -- these. No GROUP BY: (item_id, store_id, date) is already unique in the
 -- staged file, so this is a pass-through that adds the descriptive columns.
