@@ -1,5 +1,11 @@
 # Hierarchical Demand Forecasting with Coherent Reconciliation
 
+### ▶ **[Open the live dashboard](https://vishesh-ranka.github.io/scm-forecasting-project/)**
+
+*Interactive, no install — charts, glossary and every dropdown run in your browser.*
+
+---
+
 Predicting how many units a retailer will sell — for the company as a whole, for each product category, for each store, and for each individual product in each store — and then adjusting those predictions so they **add up correctly to each other**, which separately-made predictions never do on their own.
 
 Built on the [M5 Walmart dataset](https://www.kaggle.com/competitions/m5-forecasting-accuracy):
