@@ -1,0 +1,13 @@
+# Dark slate theme for the dashboard. Kept here rather than inline in app.py so
+# it applies consistently to every widget, not just the elements we style.
+[theme]
+base = "dark"
+backgroundColor = "#1a1a2e"
+secondaryBackgroundColor = "#232342"
+textColor = "#e8e8e8"
+primaryColor = "#5ec8c8"
+linkColor = "#7fd6d6"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false

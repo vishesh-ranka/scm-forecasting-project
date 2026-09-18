@@ -1,0 +1,47 @@
+# Large raw + intermediate data: regenerable from the pipeline, too big for git.
+# sales_long.parquet (98.5 MB) and hierarchy/item_store.parquet (98.8 MB) sit
+# just under GitHub's hard 100 MB per-file limit, so they must never be tracked.
+data/staged/*
+data/forecasts/
+*.parquet
+
+# ...but keep the small hierarchy lookup tables (228 KB combined). They make the
+# results interpretable without rerunning the pipeline.
+#
+# NOTE ON THE PATTERN: `data/staged/*` excludes the directory CONTENTS, and git
+# will not descend into an excluded directory - so a bare
+# `!data/staged/hierarchy/store.parquet` negation is silently ignored and tracks
+# nothing. The directory has to be re-opened first, then its contents excluded,
+# then the individual files re-included. Verified to track exactly these four.
+!data/staged/hierarchy/
+data/staged/hierarchy/*
+!data/staged/hierarchy/store.parquet
+!data/staged/hierarchy/department.parquet
+!data/staged/hierarchy/category.parquet
+!data/staged/hierarchy/total.parquet
+
+# Raw M5 competition input CSVs. These are re-downloadable from Kaggle and are
+# WAY over GitHub's hard 100 MB per-file limit - a push containing them is
+# rejected outright:
+#   sell_prices.csv              194.0 MB
+#   sales_train_evaluation.csv   116.1 MB
+#   sales_train_validation.csv   114.4 MB
+#   sample_submission.csv          5.0 MB  (small, but raw input like the rest)
+sell_prices.csv
+sales_train_evaluation.csv
+sales_train_validation.csv
+sample_submission.csv
+
+# calendar.csv (104 KB) is deliberately NOT ignored - it is small and is needed
+# to interpret the date indices in the results.
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
