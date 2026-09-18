@@ -1,0 +1,12 @@
+# GitHub's language bar is computed by Linguist, which by default counts only
+# languages it classifies as "programming" or "markup".
+
+# SQL is classified type:data, so it is excluded from the stats even though the
+# two staging/hierarchy scripts are a real part of this pipeline. Force it in.
+*.sql linguist-detectable=true
+
+# docs/index.html is emitted by src/build_static_dashboard.py, not hand-written.
+# Linguist already skips docs/ as a documentation path; marking it generated
+# states the intent explicitly and keeps a 232 KB build artifact from swamping
+# the language bar for a project that is really Python + SQL.
+docs/index.html linguist-generated=true
