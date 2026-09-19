@@ -57,8 +57,8 @@ LEVEL_BLURB = {
     "category": "3 categories, **FOODS**, **HOBBIES**, **HOUSEHOLD**.",
     "department": "7 departments, **FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, "
                   "HOUSEHOLD_1, HOUSEHOLD_2**.",
-    "store": "10 Walmart stores, **CA_1–CA_4** (California), **TX_1–TX_3** (Texas), "
-             "**WI_1–WI_3** (Wisconsin).",
+    "store": "10 Walmart stores, **CA_1 to CA_4** (California), **TX_1 to TX_3** (Texas), "
+             "**WI_1 to WI_3** (Wisconsin).",
     "item_store": "30,490 combinations, 3,049 products × 10 stores "
                   "(e.g. `FOODS_1_001_CA_1` is product FOODS_1_001 in store CA_1).",
 }
@@ -360,7 +360,7 @@ st.markdown(
     "other**, which separately made predictions never do on their own."
 )
 st.caption(
-    "Data: the public M5 competition dataset (Walmart, 2011–2016). **Units** means individual items "
+    "Data: the public M5 competition dataset (Walmart, 2011 to 2016). **Units** means individual items "
     "sold per day, one unit is one item scanned at a checkout. Product names are anonymised in the "
     "source data, so products appear as IDs such as `FOODS_1_001`; the three categories (FOODS, "
     "HOBBIES, HOUSEHOLD) and the 10 store IDs are the real groupings the data ships with."
@@ -384,7 +384,7 @@ st.markdown("### :primary[The Problem]")
 st.markdown(
     "A demand plan gets used at every altitude at once. Finance commits to a company wide total, "
     "category managers plan by category, and the replenishment team orders stock for one product "
-    "in one store. If each level is forecast on its own, **those numbers disagree** - and someone "
+    "in one store. If each level is forecast on its own, **those numbers disagree**: and someone "
     "ends up reconciling them in a spreadsheet by hand."
 )
 
@@ -450,14 +450,14 @@ st.divider()
 st.markdown("### :primary[Forecast Accuracy By Level]")
 st.markdown(
     "Pick a level of the business to see how the three methods compare. "
-    "**Lower bars are better** - the number is the average amount the forecast missed by, per day."
+    "**Lower bars are better**: the number is the average amount the forecast missed by, per day."
 )
 
 level = st.selectbox(
     "Choose A Level Of The Business", LEVELS,
     format_func=lambda lv: LEVEL_LABELS[lv], key="level_select",
 )
-st.caption(f"**{LEVEL_LABELS[level]}** - {LEVEL_BLURB[level]}")
+st.caption(f"**{LEVEL_LABELS[level]}**: {LEVEL_BLURB[level]}")
 
 level_errors = errors[errors["level"] == level].set_index("method")["rmse"].to_dict()
 baseline = level_errors["unreconciled"]
@@ -936,7 +936,7 @@ within a rounding error - a gap of about one unit in eleven trillion. That consi
 *guaranteed by construction*, not tuned for.
 
 **What it cost.** Company-wide accuracy improved **{(total_orig - total_mint) / total_orig * 100:.1f}%**
-and category accuracy **4.6%**, but department and store forecasts got **2.7–5.6% worse**. Error was
+and category accuracy **4.6%**, but department and store forecasts got **2.7 to 5.6% worse**. Error was
 moved, not removed. At the individual-product level almost nothing changed at all - the typical
 forecast shifted by 0.05 units a day.
 
@@ -954,14 +954,14 @@ st.markdown("### :primary[Glossary And Technical Details]")
 
 with st.expander("Glossary"):
     st.markdown(
-        "- **Forecast** - a prediction of how many units will sell on a future day.\n"
-        "- **Base forecast** - the first draft prediction made for each level separately, "
+        "- **Forecast**: a prediction of how many units will sell on a future day.\n"
+        "- **Base forecast**: the first draft prediction made for each level separately, "
         "before any adjustment.\n"
-        "- **Hierarchy level** - one altitude of the business: the company total, a product "
+        "- **Hierarchy level**: one altitude of the business: the company total, a product "
         "category, a department, a store, or a single product in a single store.\n"
-        "- **Reconciliation** - adjusting a set of forecasts so the smaller ones add up exactly "
+        "- **Reconciliation**: adjusting a set of forecasts so the smaller ones add up exactly "
         "to the bigger ones.\n"
-        "- **Forecast error (RMSE)** - how far off the forecast was, on average, in units of "
+        "- **Forecast error (RMSE)**: how far off the forecast was, on average, in units of "
         "product per day. Lower is better."
     )
 

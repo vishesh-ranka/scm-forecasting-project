@@ -12,7 +12,7 @@ Built on the [M5 Walmart dataset](https://www.kaggle.com/competitions/m5-forecas
 
 - **3,049 products** sold across **10 stores** in 3 US states
 - **1,913 days** of daily sales history (2011-01-29 → 2016-04-24, about 5¼ years)
-- **58.3 million rows** - one row for every product, in every store, on every day
+- **58.3 million rows**, one row for every product, in every store, on every day
 - **30,511 separate forecasts** produced, one for each thing being predicted, at all five levels
 
 **Stack:** DuckDB · LightGBM · hierarchicalforecast (Nixtla) · SciPy sparse · pandas/NumPy · matplotlib
@@ -90,11 +90,11 @@ The final **28 days** of history are hidden from the models and kept aside to te
 | Forecast set | Worst gap on any single day | As a share of that day's company wide sales |
 |---|---:|---:|
 | **Original Forecast** (before fixing) | 3,449 units | up to 2.5% |
-| **Reconciled Forecast** - Bottom Up method | **0 units** | **0.000%** |
-| **Reconciled Forecast** - MinT method (OLS) | **0 units** | **0.000%** |
-| **Reconciled Forecast** - MinT method (WLS) | **0 units** | **0.000%** |
+| **Reconciled Forecast**, Bottom Up method | **0 units** | **0.000%** |
+| **Reconciled Forecast**, MinT method (OLS) | **0 units** | **0.000%** |
+| **Reconciled Forecast**, MinT method (WLS) | **0 units** | **0.000%** |
 
-Before reconciliation, adding up the individual forecasts gave an answer that differed from the company wide forecast by as much as **3,449 units of product on a single day** - roughly 1.9–2.5% of that day's sales. After reconciliation the gap is **exactly zero** at every level.
+Before reconciliation, adding up the individual forecasts gave an answer that differed from the company wide forecast by as much as **3,449 units of product on a single day**, roughly 1.9 to 2.5% of that day's sales. After reconciliation the gap is **exactly zero** at every level.
 
 This is a guarantee rather than a lucky result: the reconciled numbers are *built* by summing a single consistent set of product level figures, so they cannot fail to add up.
 
@@ -114,7 +114,7 @@ This is a guarantee rather than a lucky result: the reconciled numbers are *buil
 | **Store** | **422.2 units/day** | 487.0 units/day | 445.7 units/day | 5.6% less accurate |
 | **Individual Product** (per store) | 2.128 units/day | 2.128 units/day | **2.125 units/day** | 0.1% more accurate |
 
-The MinT method improves the top of the business substantially and **costs 2.7–5.6% accuracy in the middle.** Reconciliation moves error around to buy consistency; it does not make every level more accurate at once.
+The MinT method improves the top of the business substantially and **costs 2.7 to 5.6% accuracy in the middle.** Reconciliation moves error around to buy consistency; it does not make every level more accurate at once.
 
 Note how different the scale is at each level: a company wide forecast misses by roughly 3,000 units on an average day because it is summing millions of units of sales, while a single product in a single store misses by about 2 units a day because it typically sells only a handful. The columns are comparable within a row, not down a column.
 
@@ -130,7 +130,7 @@ Choosing reconciliation is therefore a business decision about which altitude th
 
 ### The textbook method does not fit in memory
 
-The standard version of MinT needs a table comparing every product store combination against every other one. With 30,490 combinations that table is **30,490 × 30,490 entries, about 7.4 GB** - and the mathematics requires effectively inverting it, which is far beyond a laptop.
+The standard version of MinT needs a table comparing every product store combination against every other one. With 30,490 combinations that table is **30,490 × 30,490 entries, about 7.4 GB**, and the mathematics requires effectively inverting it, which is far beyond a laptop.
 
 The version used here exploits the fact that the structure is mostly empty: of the 930 million possible entries in the summing table, only **152,450 are non zero (0.016% of it)**. Solving it that way takes **0.06 seconds**.
 

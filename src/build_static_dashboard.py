@@ -33,7 +33,7 @@ LEVELS = [
     ("department", "Department",
      "7 departments, FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, HOUSEHOLD_1, HOUSEHOLD_2."),
     ("store", "Store",
-     "10 Walmart stores, CA_1–CA_4 (California), TX_1–TX_3 (Texas), WI_1–WI_3 (Wisconsin)."),
+     "10 Walmart stores, CA_1 to CA_4 (California), TX_1 to TX_3 (Texas), WI_1 to WI_3 (Wisconsin)."),
     ("item_store", "Individual Product (per store)",
      "30,490 combinations, 3,049 products × 10 stores."),
 ]
@@ -267,7 +267,7 @@ pre{background:#15152b;border:1px solid var(--line);border-radius:8px;padding:14
 Wisconsin, for the company as a whole, for each product category, for each store, and for each
 individual product in each store, and then adjusting those predictions so they
 <strong>add up correctly to each other</strong>, which separately made predictions never do on their own.</p>
-<p class="muted">Data: the public M5 competition dataset (Walmart, 2011–2016). <strong>Units</strong> means
+<p class="muted">Data: the public M5 competition dataset (Walmart, 2011 to 2016). <strong>Units</strong> means
 individual items sold per day. Product names are anonymised in the source data, so products appear as
 IDs such as <code>FOODS_1_001</code>; the three categories and 10 store IDs are the real groupings the
 data ships with.</p>
@@ -279,7 +279,7 @@ data ships with.</p>
 <h2>The Problem</h2>
 <p>A demand plan gets used at every altitude at once. Finance commits to a company wide total, category
 managers plan by category, and the replenishment team orders stock for one product in one store. If each
-level is forecast on its own, <strong>those numbers disagree</strong> - and someone ends up reconciling
+level is forecast on its own, <strong>those numbers disagree</strong>: and someone ends up reconciling
 them in a spreadsheet by hand.</p>
 
 <h2>Why This Is Hard</h2>
@@ -314,7 +314,7 @@ day because it sums millions of units of sales, while a single product in a sing
 
 <h3>What If: Where Would You Rather Be Accurate?</h3>
 <div class="controls">
-  <div class="ctl"><label for="blend">Drag to shift priority - <span id="blendLabel"></span></label>
+  <div class="ctl"><label for="blend">Drag to shift priority: <span id="blendLabel"></span></label>
     <input type="range" id="blend" min="0" max="100" step="5" value="0"></div>
 </div>
 <div class="chart" id="blendChart"></div>
@@ -401,7 +401,7 @@ company wide forecast by as much as <strong>3,449 units on a single day</strong>
 agree to within a rounding error, a gap of about one unit in eleven trillion. That consistency is
 <em>guaranteed by construction</em>, not tuned for.</p>
 <p><strong>What it cost.</strong> Company wide accuracy improved <strong>12.5%</strong> and category
-accuracy <strong>4.6%</strong>, but department and store forecasts got <strong>2.7–5.6% worse</strong>.
+accuracy <strong>4.6%</strong>, but department and store forecasts got <strong>2.7 to 5.6% worse</strong>.
 Error was moved, not removed. At the individual product level almost nothing changed at all.</p>
 <p><strong>So what.</strong> Whether this is a good trade depends on one question: which level is the plan
 actually committed at? If finance signs up to a company wide number, reconciliation pays for itself. If
@@ -413,11 +413,11 @@ decision, and the numbers above are the input to it, not a model selection quest
 <h2>Glossary And Technical Details</h2>
 <details><summary>Glossary</summary>
 <ul>
-<li><strong>Forecast</strong> - a prediction of how many units will sell on a future day.</li>
-<li><strong>Base forecast</strong> - the first draft prediction made for each level separately, before any adjustment.</li>
-<li><strong>Hierarchy level</strong> - one altitude of the business: the company total, a product category, a department, a store, or a single product in a single store.</li>
-<li><strong>Reconciliation</strong> - adjusting a set of forecasts so the smaller ones add up exactly to the bigger ones.</li>
-<li><strong>Forecast error (RMSE)</strong> - how far off the forecast was, on average, in units of product per day. Lower is better.</li>
+<li><strong>Forecast</strong>: a prediction of how many units will sell on a future day.</li>
+<li><strong>Base forecast</strong>: the first draft prediction made for each level separately, before any adjustment.</li>
+<li><strong>Hierarchy level</strong>: one altitude of the business: the company total, a product category, a department, a store, or a single product in a single store.</li>
+<li><strong>Reconciliation</strong>: adjusting a set of forecasts so the smaller ones add up exactly to the bigger ones.</li>
+<li><strong>Forecast error (RMSE)</strong>: how far off the forecast was, on average, in units of product per day. Lower is better.</li>
 </ul>
 </details>
 <details><summary>How The Forecasts Were Built</summary>
@@ -557,7 +557,7 @@ function drawError(){
   const vals = METHODS.map(function(m){return e[m.key];});
   const deltas = METHODS.map(function(m){return (e[m.key]-base)/base*100;});
   const blurb = LEVELS.filter(function(l){return l.key===lv;})[0].blurb;
-  document.getElementById('lvlBlurb').innerHTML = '<strong>' + labelOf(lv) + '</strong> - ' + blurb;
+  document.getElementById('lvlBlurb').innerHTML = '<strong>' + labelOf(lv) + '</strong>: ' + blurb;
 
   Plotly.react('errChart', [{
     type:'bar', x:METHODS.map(function(m){return m.label;}), y:vals,
@@ -790,7 +790,7 @@ function drawCoh(){
   document.getElementById('cohNote').innerHTML = stage === 'before'
     ? '<div class="note warn">The levels disagree. Adding up the individual forecasts gives an answer ' +
       'that differs from the company wide forecast by as much as 3,449 units on a single day, roughly ' +
-      '1.9–2.5% of that day\'s sales.</div>'
+      '1.9 to 2.5% of that day\'s sales.</div>'
     : '<div class="note good"><strong>Every level now adds up.</strong> What is left is effectively zero ' +
       '- ordinary floating point rounding from adding 30,490 numbers in a different order, not a real ' +
       'inconsistency. The Bottom Up gap is exactly 0 and the MinT gap is about 0.00000001 units, against ' +
