@@ -27,14 +27,14 @@ RESULTS_DIR = PROJECT_ROOT / "results"
 LEVELS = ["total", "category", "department", "store", "item_store"]
 # Plain-language labels, matching the terminology used in README.md.
 LEVEL_LABELS = {
-    "total": "Company-Wide\nTotal",
+    "total": "Company Wide\nTotal",
     "category": "Product\nCategory",
     "department": "Department",
     "store": "Store",
     "item_store": "Individual Product\n(per store)",
 }
 LEVEL_LABELS_FLAT = {
-    "total": "Company-Wide Total",
+    "total": "Company Wide Total",
     "category": "Product Category",
     "department": "Department",
     "store": "Store",
@@ -44,13 +44,13 @@ METHODS = ["unreconciled", "bottom_up", "mint_ols", "mint_wls_struct"]
 RECONCILED_METHODS = METHODS[1:]
 LABELS = {
     "unreconciled": "Original forecast (before fixing)",
-    "bottom_up": "Reconciled - Bottom-Up method",
-    "mint_ols": "Reconciled - MinT method (OLS)",
-    "mint_wls_struct": "Reconciled - MinT method (WLS)",
+    "bottom_up": "Reconciled, Bottom Up method",
+    "mint_ols": "Reconciled, MinT method (OLS)",
+    "mint_wls_struct": "Reconciled, MinT method (WLS)",
 }
 SHORT_LABELS = {
     "unreconciled": "Original forecast",
-    "bottom_up": "Bottom-Up",
+    "bottom_up": "Bottom Up",
     "mint_ols": "MinT (OLS)",
     "mint_wls_struct": "MinT (WLS)",
 }
@@ -226,7 +226,7 @@ def chart_rmse(rmse):
     fig.text(
         0.5, 0.905,
         "Forecast error over the 28 days held out for testing, for four methods at five levels of the business. Lower is better.\n"
-        "A: how big the error is at each level (each panel has its own scale).   B: change vs. the original forecast - below zero is more accurate.",
+        "A: how big the error is at each level (each panel has its own scale).   B: change vs. the original forecast, below zero is more accurate.",
         ha="center", fontsize=12.5, color=INK_SECONDARY, linespacing=1.5,
     )
     for ax, tag in ((axes_a[0], "A"), (ax_b, "B")):
@@ -258,9 +258,9 @@ def chart_total(con, rmse):
 
     series = [
         ("actual", "Actual demand", LINE_COLORS["actual"], 2.8),
-        ("unreconciled", f"Original forecast  -  average miss {rmse[('total','unreconciled')]:,.0f} units/day",
+        ("unreconciled", f"Original forecast, average miss {rmse[('total','unreconciled')]:,.0f} units/day",
          LINE_COLORS["unreconciled"], 2.4),
-        ("mint_wls_struct", f"Reconciled forecast (MinT)  -  average miss {rmse[('total','mint_wls_struct')]:,.0f} units/day",
+        ("mint_wls_struct", f"Reconciled forecast (MinT), average miss {rmse[('total','mint_wls_struct')]:,.0f} units/day",
          LINE_COLORS["mint_wls_struct"], 2.4),
     ]
     for col, label, color, lw in series:
@@ -271,7 +271,7 @@ def chart_total(con, rmse):
 
     ax.set_xticks(x[::3])
     ax.set_xticklabels([d.strftime("%b %d") for d in df["date"][::3]], fontsize=12)
-    ax.set_xlabel("Test window - 28 days held out (Mar 28 - Apr 24, 2016)",
+    ax.set_xlabel("Test window, 28 days held out (Mar 28, Apr 24, 2016)",
                   fontsize=12.5, color=INK_SECONDARY, labelpad=10)
     ax.set_ylabel("Total units sold per day\n(all 3,049 products x 10 stores)",
                   fontsize=12.5, color=INK_SECONDARY, labelpad=10)
@@ -281,11 +281,11 @@ def chart_total(con, rmse):
     ax.legend(loc="lower left", bbox_to_anchor=(0, 1.005), ncol=3, frameon=False,
               fontsize=12.5, handlelength=2.0, columnspacing=2.6)
 
-    ax.set_title("Company-wide daily demand: forecast vs. actual",
+    ax.set_title("Company wide daily demand: forecast vs. actual",
                  fontsize=17.5, color=INK, pad=74, loc="left", fontweight="semibold")
     ax.text(
         0, 1.135,
-        "Both forecasts under-shoot the weekly peaks; the reconciled version's daily correction is small but cuts company-wide error by 12.5%.",
+        "Both forecasts under shoot the weekly peaks; the reconciled version's daily correction is small but cuts company wide error by 12.5%.",
         transform=ax.transAxes, fontsize=12.5, color=INK_SECONDARY,
     )
 

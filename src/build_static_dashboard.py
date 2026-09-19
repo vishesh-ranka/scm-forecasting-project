@@ -28,18 +28,18 @@ PLOTLY_VERSION = "2.35.2"
 TOP_PRODUCTS = 300
 
 LEVELS = [
-    ("total", "Company-Wide Total", "One number: every product in every store, combined."),
-    ("category", "Product Category", "3 categories - FOODS, HOBBIES, HOUSEHOLD."),
+    ("total", "Company Wide Total", "One number: every product in every store, combined."),
+    ("category", "Product Category", "3 categories, FOODS, HOBBIES, HOUSEHOLD."),
     ("department", "Department",
-     "7 departments - FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, HOUSEHOLD_1, HOUSEHOLD_2."),
+     "7 departments, FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, HOUSEHOLD_1, HOUSEHOLD_2."),
     ("store", "Store",
-     "10 Walmart stores - CA_1–CA_4 (California), TX_1–TX_3 (Texas), WI_1–WI_3 (Wisconsin)."),
+     "10 Walmart stores, CA_1–CA_4 (California), TX_1–TX_3 (Texas), WI_1–WI_3 (Wisconsin)."),
     ("item_store", "Individual Product (per store)",
-     "30,490 combinations - 3,049 products × 10 stores."),
+     "30,490 combinations, 3,049 products × 10 stores."),
 ]
 UI_METHODS = [
     ("unreconciled", "Original Forecast", "#2B2B2B"),
-    ("bottom_up", "Reconciled: Bottom-Up", "#C9743C"),
+    ("bottom_up", "Reconciled: Bottom Up", "#C9743C"),
     ("mint_wls_struct", "Reconciled: MinT", "#2F5E93"),
 ]
 
@@ -205,7 +205,7 @@ HTML = r"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device width, initial scale=1">
 <title>Hierarchical Demand Forecasting</title>
 <meta name="description" content="Reconciling retail demand forecasts across a crossed hierarchy of 30,511 series.">
 <script src="https://cdn.plot.ly/plotly-__PLOTLY_VERSION__.min.js" charset="utf-8"></script>
@@ -264,9 +264,9 @@ pre{background:#15152b;border:1px solid var(--line);border-radius:8px;padding:14
 
 <h1>Hierarchical Demand Forecasting</h1>
 <p class="lede">Predicting daily sales for <strong>10 Walmart stores</strong> in California, Texas and
-Wisconsin - for the company as a whole, for each product category, for each store, and for each
-individual product in each store - and then adjusting those predictions so they
-<strong>add up correctly to each other</strong>, which separately-made predictions never do on their own.</p>
+Wisconsin, for the company as a whole, for each product category, for each store, and for each
+individual product in each store, and then adjusting those predictions so they
+<strong>add up correctly to each other</strong>, which separately made predictions never do on their own.</p>
 <p class="muted">Data: the public M5 competition dataset (Walmart, 2011–2016). <strong>Units</strong> means
 individual items sold per day. Product names are anonymised in the source data, so products appear as
 IDs such as <code>FOODS_1_001</code>; the three categories and 10 store IDs are the real groupings the
@@ -277,17 +277,17 @@ data ships with.</p>
 <hr>
 
 <h2>The Problem</h2>
-<p>A demand plan gets used at every altitude at once. Finance commits to a company-wide total, category
+<p>A demand plan gets used at every altitude at once. Finance commits to a company wide total, category
 managers plan by category, and the replenishment team orders stock for one product in one store. If each
 level is forecast on its own, <strong>those numbers disagree</strong> - and someone ends up reconciling
 them in a spreadsheet by hand.</p>
 
 <h2>Why This Is Hard</h2>
-<p>There are two independent ways to slice this business - by <strong>product</strong>
+<p>There are two independent ways to slice this business, by <strong>product</strong>
 (product → department → category) and by <strong>geography</strong> (store → state). These two paths
 <strong>cross rather than nest</strong>: every category is sold in every store, so neither slicing sits
-inside the other. A single product-in-a-store rolls up through two different chains, not one.</p>
-<p>That rules out the simplest fix - taking the company total and splitting it downward - because there
+inside the other. A single product in a store rolls up through two different chains, not one.</p>
+<p>That rules out the simplest fix, taking the company total and splitting it downward, because there
 is no single path down. It forces methods that work on the whole structure at once.</p>
 <pre>Company Total ──┬── Product Category ── Department ──┐
                 │                                    ├── Individual Product per Store
@@ -312,15 +312,15 @@ contains no store addresses or coordinates, so exact locations are not shown.</p
 day because it sums millions of units of sales, while a single product in a single store misses by about
 2 units because it only sells a handful.</p>
 
-<h3>What-If: Where Would You Rather Be Accurate?</h3>
+<h3>What If: Where Would You Rather Be Accurate?</h3>
 <div class="controls">
   <div class="ctl"><label for="blend">Drag to shift priority - <span id="blendLabel"></span></label>
     <input type="range" id="blend" min="0" max="100" step="5" value="0"></div>
 </div>
 <div class="chart" id="blendChart"></div>
 <p class="muted"><strong>Illustrative only.</strong> This slides linearly between two results that were
-already computed (MinT at 0%, the original forecast at 100%). It does not re-run the optimisation, and
-the in-between blends are not themselves coherent forecasts - they would not add up.</p>
+already computed (MinT at 0%, the original forecast at 100%). It does not re run the optimisation, and
+the in between blends are not themselves coherent forecasts, they would not add up.</p>
 
 <h3 id="memberHead">Every Level, Compared</h3>
 <div class="chart" id="memberChart"></div>
@@ -330,7 +330,7 @@ the in-between blends are not themselves coherent forecasts - they would not add
 <hr>
 
 <h2>Look Up One Product In One Store</h2>
-<p>Every product-store combination has its own forecast. The list is ordered by how much it sells.</p>
+<p>Every product store combination has its own forecast. The list is ordered by how much it sells.</p>
 <div class="controls">
   <div class="ctl"><label for="prod">Choose A Product</label><select id="prod"></select></div>
   <div class="ctl"><label>Which Forecasts To Show</label>
@@ -343,17 +343,17 @@ the in-between blends are not themselves coherent forecasts - they would not add
 </div>
 <div class="tiles" id="prodTiles"></div>
 <div class="chart" id="prodChart"></div>
-<p class="muted"><strong>The two forecast lines will look identical - that is the real result, not a
+<p class="muted"><strong>The two forecast lines will look identical, that is the real result, not a
 glitch.</strong> Reconciliation moves an individual product's forecast by about 0.05 units a day on
 average. Almost all of the adjustment lands on the aggregate levels; the bottom of the hierarchy barely
-moves. This page ships the <span id="topN"></span> highest-selling combinations of the 30,490 - the full
+moves. This page ships the <span id="topN"></span> highest selling combinations of the 30,490, the full
 set is in the Streamlit version.</p>
 
 <hr>
 
 <h2>Which Days Are Hardest To Forecast?</h2>
 <p>The same 28 days, grouped by day of the week. Retail demand is strongly weekly, so some days are
-consistently harder to predict than others - and reconciliation does not help them equally.</p>
+consistently harder to predict than others, and reconciliation does not help them equally.</p>
 <div class="controls">
   <div class="ctl"><label for="dowLvl">Choose A Level Of The Business</label>
     <select id="dowLvl"></select></div>
@@ -363,7 +363,7 @@ consistently harder to predict than others - and reconciliation does not help th
 
 <hr>
 
-<h2>Company-Wide Forecast Over The Test Period</h2>
+<h2>Company Wide Forecast Over The Test Period</h2>
 <p>The 28 days held back from the models. Actual sales are always shown; switch the forecasts on and off
 to compare them. Hover for exact values.</p>
 <div class="checks">
@@ -373,13 +373,13 @@ to compare them. Hover for exact values.</p>
 </div>
 <div class="chart" id="totalChart"></div>
 <div class="tiles" id="totalTiles"></div>
-<p class="muted">Both forecasts follow the weekly rhythm - sales peak at weekends - but under-shoot the
+<p class="muted">Both forecasts follow the weekly rhythm, sales peak at weekends, but under shoot the
 biggest peaks. The reconciled forecast sits closer to reality on most days.</p>
 
 <hr>
 
 <h2>Do The Forecasts Add Up?</h2>
-<p>If you add up every store's forecast for one day, you should get the company-wide forecast for that
+<p>If you add up every store's forecast for one day, you should get the company wide forecast for that
 day. Before reconciliation you do not. Use the toggle to compare.</p>
 <div class="checks">
   <label><input type="radio" name="coh" value="before" checked> Before Reconciliation</label>
@@ -393,20 +393,20 @@ day. Before reconciliation you do not. Use the toggle to compare.</p>
 
 <h2>The Short Version</h2>
 <div class="tiles" id="sumTiles"></div>
-<p><strong>What was built.</strong> Daily sales forecasts for 30,490 product-store combinations across 10
+<p><strong>What was built.</strong> Daily sales forecasts for 30,490 product store combinations across 10
 Walmart stores, rolled up into five levels of the business, then adjusted so every level agrees with
 every other.</p>
 <p><strong>What reconciliation bought.</strong> Before it, adding up the individual forecasts missed the
-company-wide forecast by as much as <strong>3,449 units on a single day</strong>. After it, the levels
-agree to within a rounding error - a gap of about one unit in eleven trillion. That consistency is
+company wide forecast by as much as <strong>3,449 units on a single day</strong>. After it, the levels
+agree to within a rounding error, a gap of about one unit in eleven trillion. That consistency is
 <em>guaranteed by construction</em>, not tuned for.</p>
-<p><strong>What it cost.</strong> Company-wide accuracy improved <strong>12.5%</strong> and category
+<p><strong>What it cost.</strong> Company wide accuracy improved <strong>12.5%</strong> and category
 accuracy <strong>4.6%</strong>, but department and store forecasts got <strong>2.7–5.6% worse</strong>.
-Error was moved, not removed. At the individual-product level almost nothing changed at all.</p>
+Error was moved, not removed. At the individual product level almost nothing changed at all.</p>
 <p><strong>So what.</strong> Whether this is a good trade depends on one question: which level is the plan
-actually committed at? If finance signs up to a company-wide number, reconciliation pays for itself. If
-the binding commitment is store-level replenishment, it costs more than it returns. That is a business
-decision, and the numbers above are the input to it - not a model-selection question with one right answer.</p>
+actually committed at? If finance signs up to a company wide number, reconciliation pays for itself. If
+the binding commitment is store level replenishment, it costs more than it returns. That is a business
+decision, and the numbers above are the input to it, not a model selection question with one right answer.</p>
 
 <hr>
 
@@ -414,28 +414,28 @@ decision, and the numbers above are the input to it - not a model-selection ques
 <details><summary>Glossary</summary>
 <ul>
 <li><strong>Forecast</strong> - a prediction of how many units will sell on a future day.</li>
-<li><strong>Base forecast</strong> - the first-draft prediction made for each level separately, before any adjustment.</li>
+<li><strong>Base forecast</strong> - the first draft prediction made for each level separately, before any adjustment.</li>
 <li><strong>Hierarchy level</strong> - one altitude of the business: the company total, a product category, a department, a store, or a single product in a single store.</li>
 <li><strong>Reconciliation</strong> - adjusting a set of forecasts so the smaller ones add up exactly to the bigger ones.</li>
 <li><strong>Forecast error (RMSE)</strong> - how far off the forecast was, on average, in units of product per day. Lower is better.</li>
 </ul>
 </details>
 <details><summary>How The Forecasts Were Built</summary>
-<p>The raw M5 Walmart data is reshaped in DuckDB from a spreadsheet-style file (one column per day) into
-58.3 million rows - one per product, per store, per day across 5 years - then aggregated into the five levels.</p>
-<p>Each level gets one global LightGBM model using day-of-week, month, and lagged and rolling-average
+<p>The raw M5 Walmart data is reshaped in DuckDB from a spreadsheet style file (one column per day) into
+58.3 million rows, one per product, per store, per day across 5 years, then aggregated into the five levels.</p>
+<p>Each level gets one global LightGBM model using day of week, month, and lagged and rolling average
 sales. Because the horizon is 28 days but the features reach back only 7, the model feeds its own
-predictions forward day by day rather than peeking at held-out values - verified by replacing the test
+predictions forward day by day rather than peeking at held out values, verified by replacing the test
 period with random numbers and confirming the forecasts did not change.</p>
 </details>
 <details><summary>Why The Textbook Method Does Not Fit</summary>
-<p>The standard version of MinT needs a table comparing every product-store combination with every other
-one. At 30,490 combinations that is a 30,490 × 30,490 matrix - about 7.4 GB - and the maths requires
+<p>The standard version of MinT needs a table comparing every product store combination with every other
+one. At 30,490 combinations that is a 30,490 × 30,490 matrix, about 7.4 GB, and the maths requires
 effectively inverting it.</p>
 <p>The sparse version used here exploits the fact that of the 930 million possible entries in the summing
-table, only 152,450 are non-zero (0.016%). It solves in 0.06 seconds.</p>
+table, only 152,450 are non zero (0.016%). It solves in 0.06 seconds.</p>
 <p>One caveat: MinT produces 1,280 negative forecasts out of 854,308. Rounding them up to zero would
-break the adding-up guarantee.</p>
+break the adding up guarantee.</p>
 </details>
 <details><summary>How This Page Is Built</summary>
 <p>This page is generated by <code>src/build_static_dashboard.py</code> from the same Parquet files the
@@ -628,7 +628,7 @@ function drawMembers(lv){
 function drawBlend(){
   const w = +document.getElementById('blend').value / 100;
   document.getElementById('blendLabel').textContent =
-    Math.round((1-w)*100) + '% company-wide priority / ' + Math.round(w*100) + '% store-level priority';
+    Math.round((1-w)*100) + '% company wide priority / ' + Math.round(w*100) + '% store level priority';
   const xs = [], ys = [], cols = [];
   LEVELS.forEach(function(l){
     const e = D.errorByLevel[l.key];
@@ -750,12 +750,12 @@ function drawTotal(){
       hovertemplate:'<b>%{x}</b><br>Reconciled forecast: %{y:,.0f} units<extra></extra>'});
   }
   Plotly.react('totalChart', traces, Object.assign(
-    layout('Total Units Sold Per Day - Forecast And Actual',
+    layout('Total Units Sold Per Day, Forecast And Actual',
            {height:460, legend:true, ytitle:'Total units sold per day'}),
     {hovermode:'x unified',
      xaxis:{gridcolor:C.grid, linecolor:C.grid, zeroline:false, tickfont:{color:C.soft},
             showspikes:true, spikemode:'across', spikethickness:1, spikedash:'dot', spikecolor:'#9aa0a6',
-            title:{text:'Test window (Mar 28 – Apr 24, 2016)', font:{color:C.soft}}}}
+            title:{text:'Test window (Mar 28, Apr 24, 2016)', font:{color:C.soft}}}}
   ), CFG);
 }
 
@@ -789,19 +789,19 @@ function drawCoh(){
 
   document.getElementById('cohNote').innerHTML = stage === 'before'
     ? '<div class="note warn">The levels disagree. Adding up the individual forecasts gives an answer ' +
-      'that differs from the company-wide forecast by as much as 3,449 units on a single day - roughly ' +
+      'that differs from the company wide forecast by as much as 3,449 units on a single day, roughly ' +
       '1.9–2.5% of that day\'s sales.</div>'
     : '<div class="note good"><strong>Every level now adds up.</strong> What is left is effectively zero ' +
-      '- ordinary floating-point rounding from adding 30,490 numbers in a different order, not a real ' +
-      'inconsistency. The Bottom-Up gap is exactly 0 and the MinT gap is about 0.00000001 units, against ' +
+      '- ordinary floating point rounding from adding 30,490 numbers in a different order, not a real ' +
+      'inconsistency. The Bottom Up gap is exactly 0 and the MinT gap is about 0.00000001 units, against ' +
       'a daily total of roughly 39,000 units.</div>';
 }
 
 /* ---- summary tiles ---- */
 const so = D.errorByLevel.store.unreconciled, sm = D.errorByLevel.store.mint_wls_struct;
 tiles('sumTiles', [
-  ['Company-Wide Accuracy', ((eo-em)/eo*100).toFixed(1) + '% better'],
-  ['Store-Level Accuracy', ((sm-so)/so*100).toFixed(1) + '% worse'],
+  ['Company Wide Accuracy', ((eo-em)/eo*100).toFixed(1) + '% better'],
+  ['Store Level Accuracy', ((sm-so)/so*100).toFixed(1) + '% worse'],
   ['Levels That Now Agree', '5 of 5']
 ]);
 

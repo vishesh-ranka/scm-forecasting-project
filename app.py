@@ -18,7 +18,7 @@ HIERARCHY_DIR = PROJECT_ROOT / "data" / "staged" / "hierarchy"
 
 LEVELS = ["total", "category", "department", "store", "item_store"]
 LEVEL_LABELS = {
-    "total": "Company-Wide Total",
+    "total": "Company Wide Total",
     "category": "Product Category",
     "department": "Department",
     "store": "Store",
@@ -31,7 +31,7 @@ LEVEL_LABELS = {
 UI_METHODS = ["unreconciled", "bottom_up", "mint_wls_struct"]
 METHOD_LABELS = {
     "unreconciled": "Original Forecast",
-    "bottom_up": "Reconciled: Bottom-Up",
+    "bottom_up": "Reconciled: Bottom Up",
     "mint_wls_struct": "Reconciled: MinT",
 }
 
@@ -54,12 +54,12 @@ PLOT_GRID = "#e3e5e8"
 
 LEVEL_BLURB = {
     "total": "One number: every product in every store, combined.",
-    "category": "3 categories - **FOODS**, **HOBBIES**, **HOUSEHOLD**.",
-    "department": "7 departments - **FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, "
+    "category": "3 categories, **FOODS**, **HOBBIES**, **HOUSEHOLD**.",
+    "department": "7 departments, **FOODS_1, FOODS_2, FOODS_3, HOBBIES_1, HOBBIES_2, "
                   "HOUSEHOLD_1, HOUSEHOLD_2**.",
-    "store": "10 Walmart stores - **CA_1–CA_4** (California), **TX_1–TX_3** (Texas), "
+    "store": "10 Walmart stores, **CA_1–CA_4** (California), **TX_1–TX_3** (Texas), "
              "**WI_1–WI_3** (Wisconsin).",
-    "item_store": "30,490 combinations - 3,049 products × 10 stores "
+    "item_store": "30,490 combinations, 3,049 products × 10 stores "
                   "(e.g. `FOODS_1_001_CA_1` is product FOODS_1_001 in store CA_1).",
 }
 
@@ -312,7 +312,7 @@ def chart_downloads(fig, stem: str, key: str, df=None):
         cols[0].download_button("Download Chart (HTML)", data=fig.to_html(include_plotlyjs="cdn"),
                                 file_name=f"{stem}.html", mime="text/html", key=f"html_{key}",
                                 width="stretch")
-        cols[2].caption("PNG export unavailable (kaleido needs Chrome) - exporting interactive HTML instead.")
+        cols[2].caption("PNG export unavailable (kaleido needs Chrome), exporting interactive HTML instead.")
     if df is not None:
         cols[1].download_button("Download Data (CSV)", data=df.to_csv(index=False).encode(),
                                 file_name=f"{stem}.csv", mime="text/csv", key=f"csv_{key}",
@@ -354,14 +354,14 @@ def fmt_share(pct):
 # --------------------------------------------------------------------------
 st.title("Hierarchical Demand Forecasting")
 st.markdown(
-    "Predicting daily sales for **10 Walmart stores** in California, Texas and Wisconsin - for the "
+    "Predicting daily sales for **10 Walmart stores** in California, Texas and Wisconsin, for the "
     "company as a whole, for each product category, for each store, and for each individual product "
-    "in each store - and then adjusting those predictions so they **add up correctly to each "
-    "other**, which separately-made predictions never do on their own."
+    "in each store, and then adjusting those predictions so they **add up correctly to each "
+    "other**, which separately made predictions never do on their own."
 )
 st.caption(
     "Data: the public M5 competition dataset (Walmart, 2011–2016). **Units** means individual items "
-    "sold per day - one unit is one item scanned at a checkout. Product names are anonymised in the "
+    "sold per day, one unit is one item scanned at a checkout. Product names are anonymised in the "
     "source data, so products appear as IDs such as `FOODS_1_001`; the three categories (FOODS, "
     "HOBBIES, HOUSEHOLD) and the 10 store IDs are the real groupings the data ships with."
 )
@@ -382,7 +382,7 @@ st.divider()
 # --------------------------------------------------------------------------
 st.markdown("### :primary[The Problem]")
 st.markdown(
-    "A demand plan gets used at every altitude at once. Finance commits to a company-wide total, "
+    "A demand plan gets used at every altitude at once. Finance commits to a company wide total, "
     "category managers plan by category, and the replenishment team orders stock for one product "
     "in one store. If each level is forecast on its own, **those numbers disagree** - and someone "
     "ends up reconciling them in a spreadsheet by hand."
@@ -390,12 +390,12 @@ st.markdown(
 
 st.markdown("### :primary[Why This Is Hard]")
 st.markdown(
-    "There are two independent ways to slice this business - by **product** "
+    "There are two independent ways to slice this business, by **product** "
     "(product → department → category) and by **geography** (store → state). These two paths "
     "**cross rather than nest**: every category is sold in every store, so neither slicing sits "
-    "inside the other. A single product-in-a-store rolls up through two different chains, not "
+    "inside the other. A single product in a store rolls up through two different chains, not "
     "one.\n\n"
-    "That rules out the simplest fix - taking the company total and splitting it downward - "
+    "That rules out the simplest fix, taking the company total and splitting it downward - "
     "because there is no single path down. It forces methods that work on the whole structure "
     "at once."
 )
@@ -503,9 +503,9 @@ st.caption(
 )
 
 # ---- what-if weighting ----------------------------------------------
-st.markdown("#### :primary[What-If: Where Would You Rather Be Accurate?]")
+st.markdown("#### :primary[What If: Where Would You Rather Be Accurate?]")
 blend = st.slider(
-    "Drag to shift priority between the two ends of the trade-off",
+    "Drag to shift priority between the two ends of the trade off",
     0, 100, 0, step=5, key="blend_slider",
     format="%d%%",
 )
@@ -527,7 +527,7 @@ fig_blend = go.Figure(
     )
 )
 fig_blend.update_layout(
-    title=dict(text=f"Blend: {100 - blend}% company-wide priority / {blend}% store-level priority",
+    title=dict(text=f"Blend: {100 - blend}% company wide priority / {blend}% store level priority",
                font=dict(size=16, color=PLOT_INK)),
     yaxis_title="Change in error vs. original (%)", showlegend=False,
 )
@@ -536,9 +536,9 @@ fig_blend.update_yaxes(range=[-lim * 1.5, lim * 1.5])
 st.plotly_chart(style_plot(fig_blend, height=360), width="stretch")
 st.caption(
     "**Illustrative only.** This slides linearly between two results that were already computed "
-    "(MinT at 0%, the original forecast at 100%). It does not re-run the optimisation, and the "
-    "in-between blends are not themselves coherent forecasts - they would not add up. Treat it "
-    "as a way to feel the shape of the trade-off, not as a tuning control."
+    "(MinT at 0%, the original forecast at 100%). It does not re run the optimisation, and the "
+    "in between blends are not themselves coherent forecasts, they would not add up. Treat it "
+    "as a way to feel the shape of the trade off, not as a tuning control."
 )
 
 # ---- what makes up this level ---------------------------------------
@@ -551,13 +551,13 @@ if level != "total":
     if level == "item_store":
         st.markdown(
             f"All {len(detail):,} combinations are too many to chart. "
-            "The 15 highest-selling ones:"
+            "The 15 highest selling ones:"
         )
         shown_detail = detail.head(15)
         st.caption(
-            "Only the 15 highest-volume products are shown. These are not a random sample, so "
+            "Only the 15 highest volume products are shown. These are not a random sample, so "
             "the helped/hurt pattern visible at other levels may not hold for the thousands of "
-            "lower-volume products not listed here - most of which sell fewer than one unit a day."
+            "lower volume products not listed here, most of which sell fewer than one unit a day."
         )
     else:
         fig3 = go.Figure()
@@ -625,8 +625,8 @@ st.divider()
 # --------------------------------------------------------------------------
 st.markdown("### :primary[Look Up One Product In One Store]")
 st.markdown(
-    "Every one of the 30,490 product-store combinations has its own forecast. "
-    "Narrow the list down, then pick a product - the list is ordered by how much it sells."
+    "Every one of the 30,490 product store combinations has its own forecast. "
+    "Narrow the list down, then pick a product, the list is ordered by how much it sells."
 )
 
 f1, f2 = st.columns(2)
@@ -662,7 +662,7 @@ i4.metric("Reconciliation Moved It By", f"{moved:.3f} units/day")
 
 if stats["avg_units"] == 0:
     st.warning(
-        "This product sold nothing at all during the 28-day test window - 1,587 of the 30,490 "
+        "This product sold nothing at all during the 28-day test window, 1,587 of the 30,490 "
         "combinations didn't. The actual line will sit flat on zero.", icon=None,
     )
 elif stats["avg_units"] < 1:
@@ -692,18 +692,18 @@ if which in ("Both", "Reconciled Only"):
     ))
 fig_item.update_layout(
     title=dict(text=f"Daily Sales And Forecast - {chosen}", font=dict(size=17, color=PLOT_INK)),
-    yaxis_title="Units sold per day", xaxis_title="Test window (Mar 28 - Apr 24, 2016)",
+    yaxis_title="Units sold per day", xaxis_title="Test window (Mar 28, Apr 24, 2016)",
     hovermode="x unified",
     )
 st.plotly_chart(style_plot(fig_item, height=440, legend=True), width="stretch")
 chart_downloads(fig_item, f"product_{chosen}", "item", daily)
 st.caption(
-    "**The two forecast lines will look identical - that is the real result, not a glitch.** "
+    "**The two forecast lines will look identical, that is the real result, not a glitch.** "
     "Reconciliation moves an individual product's forecast by about 0.05 units a day on average "
     "(0.30 at most), which is invisible next to daily sales. Almost all of the adjustment lands on "
     "the aggregate levels; the bottom of the hierarchy barely moves. The metric above tells you the "
     "exact size of the shift for this product. Forecasts are fractional because they are expected "
-    "values, not whole-unit predictions."
+    "values, not whole unit predictions."
 )
 st.divider()
 
@@ -714,7 +714,7 @@ st.divider()
 st.markdown("### :primary[Which Days Are Hardest To Forecast?]")
 st.markdown(
     "The same 28 days, grouped by day of the week. Retail demand is strongly weekly, so some days "
-    "are consistently harder to predict than others - and reconciliation does not help them equally."
+    "are consistently harder to predict than others, and reconciliation does not help them equally."
 )
 
 dow_level = st.selectbox(
@@ -755,8 +755,8 @@ st.markdown(
     f"({worst_gain['gain']:+,.1f})."
 )
 st.caption(
-    "Hover any bar for that weekday's average sales. High-volume days are not automatically the "
-    "hardest - the error is driven by how unusual the day is, not just how big it is."
+    "Hover any bar for that weekday's average sales. High volume days are not automatically the "
+    "hardest, the error is driven by how unusual the day is, not just how big it is."
 )
 st.divider()
 
@@ -764,7 +764,7 @@ st.divider()
 # --------------------------------------------------------------------------
 # Section 2 - total-level forecast vs actual
 # --------------------------------------------------------------------------
-st.markdown("### :primary[Company-Wide Forecast Over The Test Period]")
+st.markdown("### :primary[Company Wide Forecast Over The Test Period]")
 st.markdown(
     "The 28 days held back from the models. Actual sales are always shown; "
     "switch the forecasts on and off to compare them. Hover for exact values."
@@ -804,10 +804,10 @@ if show_mint:
         hovertemplate="<b>%{x|%b %d, %Y}</b><br>Reconciled forecast: %{y:,.0f} units<extra></extra>",
     ))
 fig2.update_layout(
-    title=dict(text="Total Units Sold Per Day - Forecast And Actual",
+    title=dict(text="Total Units Sold Per Day, Forecast And Actual",
                font=dict(size=18, color=PLOT_INK)),
     yaxis_title="Total units sold per day",
-    xaxis_title="Test window (Mar 28 - Apr 24, 2016)", hovermode="x unified",
+    xaxis_title="Test window (Mar 28, Apr 24, 2016)", hovermode="x unified",
     )
 st.plotly_chart(style_plot(fig2, height=520, legend=True), width="stretch")
 chart_downloads(fig2, "company_wide_forecast", "total", total)
@@ -821,7 +821,7 @@ m2.metric("Reconciled Forecast Error", f"{mint_err:,.0f} units/day",
 m3.metric("Accuracy Gained", f"{(orig_err - mint_err) / orig_err * 100:.1f}%")
 
 st.caption(
-    "Both forecasts follow the weekly rhythm - sales peak at weekends - but under-shoot the "
+    "Both forecasts follow the weekly rhythm, sales peak at weekends, but under shoot the "
     "biggest peaks. The reconciled forecast sits closer to reality on most days."
 )
 st.divider()
@@ -832,7 +832,7 @@ st.divider()
 # --------------------------------------------------------------------------
 st.markdown("### :primary[Do The Forecasts Add Up?]")
 st.markdown(
-    "If you add up every store's forecast for one day, you should get the company-wide forecast "
+    "If you add up every store's forecast for one day, you should get the company wide forecast "
     "for that day. Before reconciliation you do not. Use the toggle to compare."
 )
 
@@ -886,22 +886,22 @@ st.download_button("Download Table (CSV)", data=coh_out.to_csv(index=False).enco
 if stage == "Before Reconciliation":
     st.warning(
         "The levels disagree. Adding up the individual forecasts gives an answer that differs "
-        "from the company-wide forecast by as much as 3,449 units on a single day - roughly "
+        "from the company wide forecast by as much as 3,449 units on a single day, roughly "
         "1.9-2.5% of that day's sales.",
         icon=None,
     )
 else:
     st.success(
-        "**Every level now adds up.** What is left is effectively zero - ordinary "
-        "floating-point rounding from adding 30,490 numbers in a different order, not a real "
-        "inconsistency. In figures: the Bottom-Up gap is exactly 0 and the MinT gap is about "
-        "0.00000001 units, against a daily total of roughly 39,000 units - about one part in "
+        "**Every level now adds up.** What is left is effectively zero, ordinary "
+        "floating point rounding from adding 30,490 numbers in a different order, not a real "
+        "inconsistency. In figures: the Bottom Up gap is exactly 0 and the MinT gap is about "
+        "0.00000001 units, against a daily total of roughly 39,000 units, about one part in "
         "four trillion, down from 3,449 units before reconciling.",
         icon=None,
     )
     st.caption(
         "This is a guarantee rather than a lucky result: the reconciled numbers are built by "
-        "summing one consistent set of product-level figures, so they cannot disagree by more "
+        "summing one consistent set of product level figures, so they cannot disagree by more "
         "than the arithmetic noise of the summation itself."
     )
 st.divider()
@@ -918,10 +918,10 @@ store_orig = errors[(errors.level == "store") & (errors.method == "unreconciled"
 store_mint = errors[(errors.level == "store") & (errors.method == "mint_wls_struct")]["rmse"].iloc[0]
 
 s1, s2, s3 = st.columns(3)
-s1.metric("Company-Wide Accuracy", f"{(total_orig - total_mint) / total_orig * 100:.1f}% better",
-          help="Reconciled (MinT) vs. the original forecast, at the company-wide level.")
-s2.metric("Store-Level Accuracy", f"{(store_mint - store_orig) / store_orig * 100:.1f}% worse",
-          help="The same comparison at store level - the cost side of the trade-off.")
+s1.metric("Company Wide Accuracy", f"{(total_orig - total_mint) / total_orig * 100:.1f}% better",
+          help="Reconciled (MinT) vs. the original forecast, at the company wide level.")
+s2.metric("Store Level Accuracy", f"{(store_mint - store_orig) / store_orig * 100:.1f}% worse",
+          help="The same comparison at store level, the cost side of the trade off.")
 s3.metric("Levels That Now Agree", "5 of 5", help="Every level sums correctly after reconciliation.")
 
 st.markdown(
@@ -955,7 +955,7 @@ st.markdown("### :primary[Glossary And Technical Details]")
 with st.expander("Glossary"):
     st.markdown(
         "- **Forecast** - a prediction of how many units will sell on a future day.\n"
-        "- **Base forecast** - the first-draft prediction made for each level separately, "
+        "- **Base forecast** - the first draft prediction made for each level separately, "
         "before any adjustment.\n"
         "- **Hierarchy level** - one altitude of the business: the company total, a product "
         "category, a department, a store, or a single product in a single store.\n"
@@ -967,26 +967,26 @@ with st.expander("Glossary"):
 
 with st.expander("How The Forecasts Were Built"):
     st.markdown(
-        "The raw M5 Walmart data is reshaped in DuckDB from a spreadsheet-style file (one column "
-        "per day) into 58.3 million rows - one per product, per store, per day across 5 years - "
+        "The raw M5 Walmart data is reshaped in DuckDB from a spreadsheet style file (one column "
+        "per day) into 58.3 million rows, one per product, per store, per day across 5 years - "
         "then aggregated into the five levels.\n\n"
-        "Each level gets one global LightGBM model using day-of-week, month, and lagged and "
-        "rolling-average sales. A 'same as last week' seasonal benchmark is fitted alongside it. "
+        "Each level gets one global LightGBM model using day of week, month, and lagged and "
+        "rolling average sales. A 'same as last week' seasonal benchmark is fitted alongside it. "
         "Because the horizon is 28 days but the features reach back only 7, the model feeds its "
-        "own predictions forward day by day rather than peeking at held-out values - verified by "
+        "own predictions forward day by day rather than peeking at held out values, verified by "
         "replacing the test period with random numbers and confirming the forecasts did not "
         "change."
     )
 
 with st.expander("Why The Textbook Method Does Not Fit"):
     st.markdown(
-        "The standard version of MinT needs a table comparing every product-store combination "
-        "with every other one. At 30,490 combinations that is a 30,490 x 30,490 matrix - about "
-        "7.4 GB - and the maths requires effectively inverting it.\n\n"
+        "The standard version of MinT needs a table comparing every product store combination "
+        "with every other one. At 30,490 combinations that is a 30,490 x 30,490 matrix, about "
+        "7.4 GB, and the maths requires effectively inverting it.\n\n"
         "The sparse version used here exploits the fact that of the 930 million possible entries "
-        "in the summing table, only 152,450 are non-zero (0.016%). It solves in 0.06 seconds.\n\n"
+        "in the summing table, only 152,450 are non zero (0.016%). It solves in 0.06 seconds.\n\n"
         "One caveat: MinT produces 1,280 negative forecasts out of 854,308. Rounding them up to "
-        "zero would break the adding-up guarantee, so enforcing non-negativity properly requires "
+        "zero would break the adding up guarantee, so enforcing non negativity properly requires "
         "a more expensive constrained calculation."
     )
 
@@ -995,7 +995,7 @@ with st.expander("A Third Method Exists But Is Not Shown"):
         "The underlying data also contains a second MinT variant (ordinary least squares "
         "weighting, `mint_ols`). It is deliberately not surfaced anywhere in this app: "
         "explaining the difference between the two MinT weightings would need a digression this "
-        "page does not otherwise earn, and showing two near-identical 'MinT' options invites "
+        "page does not otherwise earn, and showing two near identical 'MinT' options invites "
         "confusion. It remains in `reconciled_forecasts.parquet` for completeness."
     )
 
